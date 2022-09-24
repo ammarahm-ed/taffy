@@ -24,12 +24,7 @@ enum class AlignContent {
     Stretch,
     SpaceBetween,
     SpaceAround,
-}
-
-enum class Direction {
-    Inherit,
-    LTR,
-    RTL,
+    SpaceEvenly,
 }
 
 enum class Display {
@@ -51,12 +46,6 @@ enum class JustifyContent {
     SpaceBetween,
     SpaceAround,
     SpaceEvenly,
-}
-
-enum class Overflow {
-    Visible,
-    Hidden,
-    Scroll,
 }
 
 enum class PositionType {
@@ -106,10 +95,8 @@ data class Rect<T>(
 data class Style(
     val display: Display = Display.Flex,
     val positionType: PositionType = PositionType.Relative,
-    val direction: Direction = Direction.Inherit,
     val flexDirection: FlexDirection = FlexDirection.Row,
     val flexWrap: FlexWrap = FlexWrap.NoWrap,
-    val overflow: Overflow = Overflow.Hidden,
     val alignItems: AlignItems = AlignItems.Stretch,
     val alignSelf: AlignSelf = AlignSelf.Auto,
     val alignContent: AlignContent = AlignContent.FlexStart,
@@ -138,10 +125,8 @@ data class Style(
         rustptr = nConstruct(
             display.ordinal,
             positionType.ordinal,
-            direction.ordinal,
             flexDirection.ordinal,
             flexWrap.ordinal,
-            overflow.ordinal,
             alignItems.ordinal,
             alignSelf.ordinal,
             alignContent.ordinal,
@@ -217,10 +202,8 @@ data class Style(
     private external fun nConstruct(
         display: Int,
         positionType: Int,
-        direction: Int,
         flexDirection: Int,
         flexWrap: Int,
-        overflow: Int,
         alignItems: Int,
         alignSelf: Int,
         alignContent: Int,
@@ -290,10 +273,8 @@ data class Style(
     class Builder {
         private var display: Display = Display.Flex
         private var positionType: PositionType = PositionType.Relative
-        private var direction: Direction = Direction.Inherit
         private var flexDirection: FlexDirection = FlexDirection.Row
         private var flexWrap: FlexWrap = FlexWrap.NoWrap
-        private var overflow: Overflow = Overflow.Hidden
         private var alignItems: AlignItems = AlignItems.Stretch
         private var alignSelf: AlignSelf = AlignSelf.Auto
         private var alignContent: AlignContent = AlignContent.FlexStart
@@ -314,10 +295,8 @@ data class Style(
             return Style(
                 display,
                 positionType,
-                direction,
                 flexDirection,
                 flexWrap,
-                overflow,
                 alignItems,
                 alignSelf,
                 alignContent,
@@ -346,10 +325,6 @@ data class Style(
             return this
         }
 
-        fun direction(direction: Direction): Builder {
-            this.direction = direction
-            return this
-        }
 
         fun flexDirection(flexDirection: FlexDirection): Builder {
             this.flexDirection = flexDirection
@@ -361,10 +336,6 @@ data class Style(
             return this
         }
 
-        fun overflow(overflow: Overflow): Builder {
-            this.overflow = overflow
-            return this
-        }
 
         fun alignItems(alignItems: AlignItems): Builder {
             this.alignItems = alignItems

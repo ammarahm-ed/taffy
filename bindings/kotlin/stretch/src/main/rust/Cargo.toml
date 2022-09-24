@@ -1,6 +1,6 @@
 [package]
-name = "android-stretch"
-version = "0.3.2"
+name = "taffy-android"
+version = "0.2.0"
 include = ["src/**/*", "Cargo.toml"]
 authors = ["Emil Sjölander <emil@visly.app>"]
 edition = "2021"
@@ -10,7 +10,7 @@ jni = { version = "0.19.0", default-features = false }
 taffy = { version = "0.2.0", path = "../../../../../.." }
 
 [lib]
-name = "stretch"
+name = "taffy"
 crate-type = ["cdylib"]
 
 [workspace]

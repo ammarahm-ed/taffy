@@ -7,7 +7,7 @@ class Stretch {
 
         internal fun init() {
             if (!didInit) {
-                System.loadLibrary("stretch")
+                System.loadLibrary("taffy")
                 didInit = true
                 ptr = nInit()
             }
