@@ -105,6 +105,7 @@ pub unsafe extern "C" fn Java_app_visly_stretch_Style_nConstruct(
             _ => panic!(),
         },
 
+
         position_type: match positionType {
             0 => PositionType::Relative,
             1 => PositionType::Absolute,
@@ -112,7 +113,6 @@ pub unsafe extern "C" fn Java_app_visly_stretch_Style_nConstruct(
         },
 
      
-
         flex_direction: match flexDirection {
             0 => FlexDirection::Row,
             1 => FlexDirection::Column,
@@ -213,7 +213,7 @@ pub unsafe extern "C" fn Java_app_visly_stretch_Style_nConstruct(
             height: dimension(maxHeightType, maxHeightValue),
         },
 
-        aspect_ratio: Some(aspectRatio) ,
+        aspect_ratio: if aspectRatio.is_nan() { None } else { Some(aspectRatio) },
     };
 
     Box::into_raw(Box::new(style)) as jlong
@@ -505,7 +505,6 @@ pub unsafe extern "C" fn Java_app_visly_stretch_Node_nComputeLayout(
 ) -> jfloatArray {
     let mut stretch = Box::from_raw(stretch as *mut taffy::Taffy);
     let node = Box::from_raw(node as *mut Node);
-
     stretch
         .compute_layout(
             *node,
@@ -515,6 +514,27 @@ pub unsafe extern "C" fn Java_app_visly_stretch_Node_nComputeLayout(
             },
         )
         .unwrap();
+
+    let mut output = vec![];
+    copy_output(&stretch, *node, &mut output);
+
+    Box::leak(node);
+    Box::leak(stretch);
+
+    let result = env.new_float_array(output.len() as i32).unwrap();
+    env.set_float_array_region(result, 0, &output).unwrap();
+    result
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn Java_app_visly_stretch_Node_nLayout(
+    env: JNIEnv,
+    _: JObject,
+    stretch: jlong,
+    node: jlong,
+) -> jfloatArray {
+    let stretch = Box::from_raw(stretch as *mut taffy::Taffy);
+    let node = Box::from_raw(node as *mut Node);
 
     let mut output = vec![];
     copy_output(&stretch, *node, &mut output);

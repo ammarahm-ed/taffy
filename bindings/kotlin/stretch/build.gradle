@@ -100,3 +100,15 @@ Properties properties = new Properties()
 if (project.rootProject.file("local.properties").exists()) {
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
 }
+
+task deleteOldAar(type: Delete) {
+  delete '../../../../ns-yoga/App_Resources/Android/libs/stretch-release.aar'
+}
+
+task exportAar(type: Copy) {
+  from('build/outputs/aar')
+  into('../../../../ns-yoga/App_Resources/Android/libs/')
+  include('stretch-release.aar')
+}
+
+exportAar.dependsOn(build)

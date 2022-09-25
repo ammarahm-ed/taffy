@@ -111,8 +111,13 @@ class Node {
         return children.size
     }
 
-    fun computeLayout(size: Size<Float?>): Layout {
-        val result = Layout.fromFloatArray(nComputeLayout(Stretch.ptr, rustptr, size.width ?: Float.NaN, size.height ?: Float.NaN), 0)
+    fun computeLayout(width:Float,height:Float): Layout {
+        val result = Layout.fromFloatArray(nComputeLayout(Stretch.ptr, rustptr, width,height), 0)
+        return result.second
+    }
+
+    fun layout(): Layout {
+        val result = Layout.fromFloatArray(nLayout(Stretch.ptr, rustptr), 0)
         return result.second
     }
 
@@ -129,4 +134,5 @@ class Node {
     private external fun nIsDirty(stretch: Long, ptr: Long): Boolean
     private external fun nMarkDirty(stretch: Long, ptr: Long)
     private external fun nComputeLayout(stretch: Long, ptr: Long, width: Float, height: Float): FloatArray
+    private external fun nLayout(stretch: Long, ptr: Long): FloatArray
 }
